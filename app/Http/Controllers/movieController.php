@@ -9,10 +9,18 @@ use function GuzzleHttp\json_encode;
 
 class movieController extends Controller
 {
+
+    private $serverUrl;
+
+    public function __construct()
+    {
+        $this->serverUrl = env('SERVER_URL', 'http://localhost:3000');;
+    }
+
     public function movie ($id) {
 
         $client = new Client();
-    	$response = $client->request('GET', 'http://localhost:3000/movies/'.$id);
+    	$response = $client->request('GET', $this->serverUrl."/".$id);
     	$statusCode = $response->getStatusCode();
         $body = json_decode($response->getBody()->getContents());
         
@@ -35,10 +43,9 @@ class movieController extends Controller
     public function getAllMovies () {
 
         $client = new Client();
-    	$response = $client->request('GET', 'http://localhost:3000/movies');
+    	$response = $client->request('GET', $this->serverUrl);
     	$statusCode = $response->getStatusCode();
         $body = json_decode($response->getBody()->getContents()); 
-
         return view('movieList')->with('movies', $body);
 
     }
@@ -46,7 +53,7 @@ class movieController extends Controller
     public function getSuggestion () {
 
         $client = new Client();
-    	$response = $client->request('GET', 'http://localhost:3000/movies');
+    	$response = $client->request('GET', $this->serverUrl);
     	$statusCode = $response->getStatusCode();
         $body = json_decode($response->getBody()->getContents()); 
         
