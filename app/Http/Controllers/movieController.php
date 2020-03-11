@@ -50,7 +50,8 @@ class movieController extends Controller
     	$statusCode = $response->getStatusCode();
         $body = json_decode($response->getBody()->getContents()); 
         
-        $randMovie = array_rand($body, 1);
+        //$randMovie = array_rand($body, 1);
+        $randMovie = rand(0, count($body)-1);
 
         return view('movie', [
             'name' => $body[$randMovie]->name,
